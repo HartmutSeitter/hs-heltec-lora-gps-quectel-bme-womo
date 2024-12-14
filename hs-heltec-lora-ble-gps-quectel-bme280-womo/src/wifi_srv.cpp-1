@@ -1,0 +1,65 @@
+#include <Arduino.h>
+//====================================================================================================================================
+// define the wifi server
+#include <WiFi.h>
+#include <WiFiServer.h> 
+#include "wifi_srv.h"
+
+const char* ssid = "hs-sunhill-fritz-24"; //ssid of your wifi
+const char* password = "hsinternetzugang58"; //password of your wifi
+
+WiFiServer server(80);
+
+bool setup_wifi_srv(void){
+
+  WiFi.begin(ssid, password); //connecting to wifi
+  while (WiFi.status() != WL_CONNECTED)// while wifi not connected
+  {
+    delay(500);
+    Serial.print("."); //print "...."
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
+  server.begin();
+  Serial.println("Server started");
+  Serial.println(WiFi.localIP());  // Print the IP address
+ 
+  delay(5000);
+}
+
+void http_response1( float temperature, float humidity, float pressure, WiFiClient client) {
+      // Prepare the response
+    String s = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n <!DOCTYPE html> <html> <head> <title>Umgebunds- und GPS DATA</title> <style>";
+    s += "a:link {background-color: RED;text-decoration: none;}";
+    s += "table, th, td </style> </head> <body style=background-color:WHITE>";
+    s += "<h1  style=color:RED;font-size:400%";
+    s += " ALIGN=CENTER>GPS RECEIVER DATA </h1>" ;
+    s += "<p ALIGN=CENTER style=color:BLUE;font-size:250% >";
+    s += "<b>Details</b></p> <table ALIGN=CENTER style=";
+    s += "font-size:250%;";
+    s += "> <tr> <th>Temperature = </th>";
+    s += "<td ALIGN=CENTER >";
+  
+    s += String(temperature);
+    s += (" Grad Celsius");
+
+    s += "</td> </tr> <tr> <th>Humidity =</th> <td ALIGN=CENTER >";
+    
+    s += String(humidity);
+    s += (" %");
+  
+    s += "</td> </tr> <tr>  <th>Pressuere =</th> <td ALIGN=CENTER >";
+    
+    s += String(pressure);
+    
+    s += (" hPa");
+    s += "</td></tr> <tr> <th>Altitude :-</th> <td ALIGN=CENTER >";
+    // s += (gps.altitude.meters());
+    s += (" m");
+    s += "</td>  </tr> </table> ";
+   
+    s += "</body> </html> ";
+   
+    client.print(s); // all the values are send to the webpage
+    delay(100);
+}

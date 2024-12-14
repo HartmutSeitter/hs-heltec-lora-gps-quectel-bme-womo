@@ -1,0 +1,8 @@
+// wifi server 
+#ifndef _WIFISRV_H_
+#define _WIFISRV_H_
+
+bool setup_wifi_srv(void);
+void http_response1(float temperature, float humidity, float pressure, WiFiClient client);
+
+#endif // _WIFISRV_H_
