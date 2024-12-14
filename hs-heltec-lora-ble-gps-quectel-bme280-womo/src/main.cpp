@@ -454,8 +454,9 @@ void setup()
   //==================================================================================================================================
   Serial.println("calling wifi setup");
   // hs002 comment it out
-  const char* ssid = "hs-sunhill-fritz-24"; //ssid of your wifi
-  const char* password = "hsinternetzugang58"; //password of your wifi
+    
+  const char* ssid = "...."; //ssid of your wifi
+  const char* password = "...."; //password of your wifi
 
   WiFi.begin(ssid, password); //connecting to wifi
   int i=0;
